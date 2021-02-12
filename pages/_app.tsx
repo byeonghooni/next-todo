@@ -1,13 +1,13 @@
-import App, { AppContext, AppProps, AppInitialProps } from 'next/app';
+import { AppProps } from 'next/app';
 import GlobalStyle from './GlobalStyle';
+import Header from '../components/Header';
 
-const app = ({ Component, pageProps }: AppProps) => {
-	return (
-		<>
-			<GlobalStyle />
-			<Component {...pageProps} />
-		</>
-	);
-};
+const app = ({ Component, pageProps }: AppProps) => (
+	<>
+		<GlobalStyle />
+		<Header />
+		<Component {...pageProps} />
+	</>
+);
 
 export default app;
