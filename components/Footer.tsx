@@ -1,14 +1,14 @@
 import React from 'react';
 import { useRouter } from 'next/router';
 import styled from 'styled-components';
-import pallete from '../styles/palette';
+import palette from '../styles/palette';
 
 const Container = styled.footer`
 	width: 100%;
 	height: 53px;
 	position: fixed;
 	bottom: 0;
-	border-top: 1px solid ${pallete.gray};
+	border-top: 1px solid ${palette.gray};
 	display: flex;
 	justify-content: center;
 	align-items: center;
