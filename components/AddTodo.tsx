@@ -103,7 +103,7 @@ const AddTodo: React.FC = () => {
 
 			await addTodoAPI({ text, color: selectedColor });
 
-			router.push('/');
+			await router.push('/');
 		} catch (e) {
 			console.error(e);
 		}
