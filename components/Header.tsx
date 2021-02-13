@@ -16,7 +16,7 @@ const Container = styled.div`
 
 const Header: React.FC = () => (
 	<Container>
-		<h1>Jerrynim&amp;apos;s TodoList </h1>
+		<h1>ByeongHoon Lee TodoList </h1>
 	</Container>
 );
 
