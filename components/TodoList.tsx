@@ -1,11 +1,13 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 import styled from 'styled-components';
 
-import palette from '../styles/palette';
 import { TodoType } from '../types/todo';
 
+import palette from '../styles/palette';
 import TrashCanIcon from '../public/statics/svg/trash_can.svg';
 import CheckMarkIcon from '../public/statics/svg/check_mark.svg';
+
+import { checkTodoAPI } from '../lib/api/todo';
 
 const Container = styled.div`
 	width: 100%;
@@ -142,9 +144,11 @@ type ObjectIndexType = {
 };
 
 const TodoList: React.FC<IProps> = ({ todos }) => {
+	const [localTodos, setLocalTodos] = useState(todos);
+
 	const todoColorNums = useMemo(() => {
 		const colors: ObjectIndexType = {};
-		todos.forEach(({ color }) => {
+		localTodos.forEach(({ color }) => {
 			const value = colors[color];
 
 			if (!value) {
@@ -155,13 +159,32 @@ const TodoList: React.FC<IProps> = ({ todos }) => {
 		});
 
 		return colors;
-	}, [todos]);
+	}, [localTodos]);
+
+	const checkTodo = async (id: number) => {
+		try {
+			await checkTodoAPI(id);
+
+			const newTodos = localTodos.map((todo) => {
+				if (todo.id === id) {
+					return {
+						...todo,
+						checked: !todo.checked,
+					};
+				}
+				return todo;
+			});
+			setLocalTodos(newTodos);
+		} catch (e) {
+			console.error(e);
+		}
+	};
 
 	return (
 		<Container>
 			<div className='todo-list-header'>
 				<p className='todo-list-last-todo'>
-					남은 TODO<span>{todos.length}개</span>
+					남은 TODO<span>{localTodos.length}개</span>
 				</p>
 				<div className='todo-list-header-colors'>
 					{Object.keys(todoColorNums).map((color, index) => (
@@ -175,7 +198,7 @@ const TodoList: React.FC<IProps> = ({ todos }) => {
 				</div>
 			</div>
 			<ul className='todo-list'>
-				{todos.map((todo) => (
+				{localTodos.map((todo) => (
 					<div className='todo-item' key={todo.id}>
 						<div className='todo-left-side'>
 							<div
@@ -198,14 +221,18 @@ const TodoList: React.FC<IProps> = ({ todos }) => {
 									/>
 									<CheckMarkIcon
 										className='todo-check-mark'
-										onClick={() => {}}
+										onClick={() => {
+											checkTodo(todo.id);
+										}}
 									/>
 								</>
 							) : (
 								<button
 									type='button'
 									className='todo-button'
-									onClick={() => {}}
+									onClick={() => {
+										checkTodo(todo.id);
+									}}
 								/>
 							)}
 						</div>
